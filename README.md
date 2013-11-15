@@ -2,6 +2,8 @@
 
 A small package that exposes a Laravel facade to compile Haml files using [MtHaml](https://github.com/arnaud-lb/MtHaml).
 
+
+
 ## Installation
 
 1. Add it to your composer.json (`"bkwld/laravel-haml": "~1.0"`) and do a composer install.
@@ -9,6 +11,22 @@ A small package that exposes a Laravel facade to compile Haml files using [MtHam
 2. Add the service provider to your app.php config file providers: `'Bkwld\LaravelHaml\ServiceProvider',`
 
 3. Create an alias to the facade: `'Haml' => 'Bkwld\LaravelHaml\Facade',`
+
+
+
+## Configuration
+
+You can set [MtHaml](https://github.com/arnaud-lb/MtHaml) environment, options, and filters manually.  To do so, publish the config file with `php artisan config:publish bkwld/laravel-haml` and edit it at /app/config/packages/bkwld/laravel-haml/config.php.  For instance, to turn off auto-escaping:
+
+	'mthaml' => array(
+		'enviornment' => 'php',
+		'options' => array(
+			'enable_escaper' => false,
+		),
+		'filters' => array(),
+	), 
+
+
 
 ## Usage
 

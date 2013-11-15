@@ -19,14 +19,26 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider {
 		// Register the main class which sits behind the HAML facade
 		$this->app->singleton('laravel-haml', function($app) {
 
+			// Get config
+			$config = $app->make('config')->get('laravel-haml::config');
+
 			// Inject Dependencies
 			return new Haml(
-				new \MtHaml\Environment('php'),
-				$this->app->make('path').'/views',
-				$this->app->environment()
+				new \MtHaml\Environment($config['mthaml']['enviornment'], $config['mthaml']['options'], $config['mthaml']['filters']),
+				$app->make('path').'/views',
+				$app->environment()
 			);
 		});
 
+	}
+
+	/**
+	 * Bootstrap the application events.
+	 *
+	 * @return void
+	 */
+	public function boot() {
+		$this->package('bkwld/laravel-haml');
 	}
 
 	/**
