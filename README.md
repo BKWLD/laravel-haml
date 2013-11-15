@@ -1,6 +1,6 @@
-# Auto Publish
+# Laravel Haml
 
-A small package that exposes a Laravel facade to compile HAML files using [MtHaml](https://github.com/arnaud-lb/MtHaml).
+A small package that exposes a Laravel facade to compile Haml files using [MtHaml](https://github.com/arnaud-lb/MtHaml).
 
 ## Installation
 
@@ -8,14 +8,14 @@ A small package that exposes a Laravel facade to compile HAML files using [MtHam
 
 2. Add the service provider to your app.php config file providers: `'Bkwld\LaravelHaml\ServiceProvider',`
 
-3. Create an alias to the facade: `'HAML' => 'Bkwld\LaravelHaml\Facade',`
+3. Create an alias to the facade: `'Haml' => 'Bkwld\LaravelHaml\Facade',`
 
 ## Usage
 
 Manually invoke the LaravelHaml compiler before you render your view.  For instance, here is a Laravel controller action:
 
 	public function index() {
-		HAML::compile('home.index');
+		Haml::compile('home.index');
 		$this->layout->nest('content', 'home.index');
 	}
 
