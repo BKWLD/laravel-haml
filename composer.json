@@ -1,0 +1,22 @@
+{
+    "name": "bkwld/laravel-haml",
+    "description": "Wraps MtHaml for ease use in Laravel",
+    "authors": [
+        {
+            "name": "Robert Reinhard",
+            "email": "info@bkwld.com"
+        }
+    ],
+    "license": "MIT",
+    "require": {
+        "php": ">=5.3.0",
+        "illuminate/support": "4.0.x",
+        "mthaml/mthaml": "~1.3.0"
+    },
+    "autoload": {
+        "psr-0": {
+            "Bkwld\\LaravelHaml": "src/"
+        }
+    },
+    "minimum-stability": "dev"
+}
