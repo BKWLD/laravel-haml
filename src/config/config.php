@@ -5,7 +5,7 @@
 	 * These options are passed directly to MtHaml's environment constructor
 	 */
 	'mthaml' => array(
-		'enviornment' => 'php',
+		'environment' => 'php',
 		'options' => array(),
 		'filters' => array(),
 	),

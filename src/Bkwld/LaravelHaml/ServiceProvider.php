@@ -24,7 +24,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider {
 
 			// Inject Dependencies
 			return new Haml(
-				new \MtHaml\Environment($config['mthaml']['enviornment'], $config['mthaml']['options'], $config['mthaml']['filters']),
+				new \MtHaml\Environment($config['mthaml']['environment'], $config['mthaml']['options'], $config['mthaml']['filters']),
 				$app->make('path').'/views',
 				$app->environment()
 			);

@@ -17,7 +17,7 @@ class Haml {
 
 	/**
 	 * Compile a haml file into a Laravel PHP view if called from a "local"
-	 * enviornment.  It will save the rendered template in the same directory
+	 * environment.  It will save the rendered template in the same directory
 	 * as the haml view, with the same name.
 	 * 
 	 * This is based largely on the example file from mthaml:
@@ -30,7 +30,7 @@ class Haml {
 	 */
 	public function compile($haml_view) {
 
-		// Only compile while on a local enviornment
+		// Only compile while on a local environment
 		if ($this->env != 'local') return;
 
 		// Get haml template code
