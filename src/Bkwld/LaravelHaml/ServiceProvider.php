@@ -1,5 +1,9 @@
 <?php namespace Bkwld\LaravelHaml;
 
+// Dependencies
+use MtHaml;
+use Illuminate\View\Engines\CompilerEngine;
+
 class ServiceProvider extends \Illuminate\Support\ServiceProvider {
 
 	/**
@@ -7,7 +11,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider {
 	 *
 	 * @var bool
 	 */
-	protected $defer = true;
+	protected $defer = false;
 
 	/**
 	 * Register the service provider.
@@ -15,19 +19,17 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider {
 	 * @return void
 	 */
 	public function register() {
-		
-		// Register the main class which sits behind the HAML facade
-		$this->app->singleton('laravel-haml', function($app) {
 
-			// Get config
+		// Bind the Haml compiler
+		$this->app->bindShared('haml.compiler', function($app) {
+
+			// Instantiate MtHaml, the brains of the operation
 			$config = $app->make('config')->get('laravel-haml::config');
+			$mthaml = new MtHaml\Environment($config['mthaml']['environment'], $config['mthaml']['options'], $config['mthaml']['filters']);
 
-			// Inject Dependencies
-			return new Haml(
-				new \MtHaml\Environment($config['mthaml']['environment'], $config['mthaml']['options'], $config['mthaml']['filters']),
-				$app->make('path').'/views',
-				$app->environment()
-			);
+			// Instantiate our Laravel-style compiler
+			$cache = $app['path.storage'].'/views';
+			return new HamlCompiler($mthaml, $app['files'], $cache);
 		});
 
 	}
@@ -39,6 +41,13 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider {
 	 */
 	public function boot() {
 		$this->package('bkwld/laravel-haml');
+		$app = $this->app;
+
+		// Add the .haml.php extension and register the Haml compiler with
+		// Laravel's view engine resolver
+		$app['view']->addExtension('haml.php', 'haml', function() use ($app) {
+			return new CompilerEngine($app['haml.compiler']);
+		});
 	}
 
 	/**
@@ -47,7 +56,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider {
 	 * @return array
 	 */
 	public function provides() {
-		return array('laravel-haml');
+		return array('haml.compiler');
 	}
 
 }
