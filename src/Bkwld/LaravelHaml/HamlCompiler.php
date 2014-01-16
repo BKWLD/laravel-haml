@@ -36,7 +36,6 @@ class HamlCompiler extends Compiler implements CompilerInterface {
 	 * @return void
 	 */
 	public function compile($path) {
-		\Log::info('farts dude');
 		$contents = $this->mthaml->compileString($this->files->get($path), $path);
 		if (!is_null($this->cachePath)) {
 			$this->files->put($this->getCompiledPath($path), $contents);
