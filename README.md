@@ -17,7 +17,7 @@ A small package that adds support for compiling Haml templates to Laravel via [M
 You can set [MtHaml](https://github.com/arnaud-lb/MtHaml) environment, options, and filters manually.  To do so, publish the config file with `php artisan config:publish bkwld/laravel-haml` and edit it at /app/config/packages/bkwld/laravel-haml/config.php.  For instance, to turn off auto-escaping:
 
 	'mthaml' => array(
-		'enviornment' => 'php',
+		'environment' => 'php',
 		'options' => array(
 			'enable_escaper' => false,
 		),
