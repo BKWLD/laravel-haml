@@ -40,7 +40,6 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider {
 	 * @return void
 	 */
 	public function boot() {
-		$this->package('bkwld/laravel-haml');
 		$app = $this->app;
 
 		// Add the .haml.php extension and register the Haml compiler with
