@@ -24,7 +24,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider {
 		$this->app->bindShared('haml.compiler', function($app) {
 
 			// Instantiate MtHaml, the brains of the operation
-			$config = $app->make('config')->get('laravel-haml::config');
+			$config = $app->make('config')->get('haml');
 			$mthaml = new MtHaml\Environment($config['mthaml']['environment'], $config['mthaml']['options'], $config['mthaml']['filters']);
 
 			// Instantiate our Laravel-style compiler
@@ -40,6 +40,11 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider {
 	 * @return void
 	 */
 	public function boot() {
+
+        $this->publishes([
+            __DIR__ . '/config/haml.php' => config_path('haml.php')
+        ]);
+
 		$app = $this->app;
 
 		// Add the .haml.php extension and register the Haml compiler with
