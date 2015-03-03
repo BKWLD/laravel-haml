@@ -41,7 +41,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider {
 	public function boot() {
 
         $this->publishes([
-            __DIR__ . '/config/haml.php' => config_path('haml.php')
+            __DIR__ . '/../../config/haml.php' => config_path('haml.php')
         ]);
 
 		$app = $this->app;
