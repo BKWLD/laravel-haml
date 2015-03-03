@@ -24,8 +24,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider {
 		$this->app->bindShared('haml.compiler', function($app) {
 
 			// Instantiate MtHaml, the brains of the operation
-			$config = $app->make('config')->get('haml');
-			$mthaml = new MtHaml\Environment($config['mthaml']['environment'], $config['mthaml']['options'], $config['mthaml']['filters']);
+			$mthaml = new MtHaml\Environment(config('mthaml.environment'), config('mthaml.options'), config('mthaml.filters'));
 
 			// Instantiate our Laravel-style compiler
 			$cache = $app['path.storage'].'/views';
