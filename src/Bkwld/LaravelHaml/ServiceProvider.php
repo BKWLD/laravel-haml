@@ -27,7 +27,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider {
 			$mthaml = new MtHaml\Environment(config('haml.mthaml.environment'), config('haml.mthaml.options'), config('haml.mthaml.filters'));
 
 			// Instantiate our Laravel-style compiler
-			$cache = $app['path.storage'].'/views';
+			$cache = storage_path('/framework/views');
 			return new HamlCompiler($mthaml, $app['files'], $cache);
 		});
 
