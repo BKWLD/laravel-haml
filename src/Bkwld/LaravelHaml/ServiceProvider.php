@@ -27,7 +27,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider {
 		if ($this->version() == 5) $this->registerLaravel5();
 
 		// Bind the Haml compiler
-		$this->app->bindShared('haml.compiler', function($app) {
+		$this->app->bindShared('Bkwld\LaravelHaml\HamlCompiler', function($app) {
 
 			// Instantiate MtHaml, the brains of the operation
 			$config = $this->getConfig();
@@ -67,7 +67,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider {
 		// Laravel's view engine resolver
 		$app = $this->app;
 		$app['view']->addExtension('haml.php', 'haml', function() use ($app) {
-			return new CompilerEngine($app['haml.compiler']);
+			return new CompilerEngine($app['Bkwld\LaravelHaml\HamlCompiler']);
 		});
 	}
 
@@ -109,7 +109,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider {
 	 * @return array
 	 */
 	public function provides() {
-		return array('haml.compiler');
+		return array('Bkwld\LaravelHaml\HamlCompiler');
 	}
 
 }
