@@ -31,10 +31,14 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider {
 
 			// Instantiate MtHaml, the brains of the operation
 			$config = $this->getConfig();
-			$mthaml = new MtHaml\Environment($config['mthaml']['environment'], $config['mthaml']['options'], $config['mthaml']['filters']);
+			$mthaml = new MtHaml\Environment($config['mthaml']['environment'], 
+				$config['mthaml']['options'], 
+				$config['mthaml']['filters']);
 
 			// Instantiate our Laravel-style compiler
-			$cache = $this->version() == 5 ? storage_path('/framework/views') : $app['path.storage'].'/views';
+			$cache = $this->version() == 5 ? 
+				storage_path('/framework/views') : 
+				$app['path.storage'].'/views';
 			return new HamlCompiler($mthaml, $app['files'], $cache);
 		});
 
