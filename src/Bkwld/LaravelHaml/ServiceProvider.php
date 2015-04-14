@@ -24,11 +24,10 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider {
 		$this->app->bindShared('haml.compiler', function($app) {
 
 			// Instantiate MtHaml, the brains of the operation
-			$config = $app->make('config')->get('laravel-haml::config');
-			$mthaml = new MtHaml\Environment($config['mthaml']['environment'], $config['mthaml']['options'], $config['mthaml']['filters']);
+			$mthaml = new MtHaml\Environment(config('haml.mthaml.environment'), config('haml.mthaml.options'), config('haml.mthaml.filters'));
 
 			// Instantiate our Laravel-style compiler
-			$cache = $app['path.storage'].'/views';
+			$cache = storage_path('/framework/views');
 			return new HamlCompiler($mthaml, $app['files'], $cache);
 		});
 
@@ -40,7 +39,11 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider {
 	 * @return void
 	 */
 	public function boot() {
-		$this->package('bkwld/laravel-haml');
+
+        $this->publishes([
+            __DIR__ . '/../../config/haml.php' => config_path('haml.php')
+        ]);
+
 		$app = $this->app;
 
 		// Add the .haml.php extension and register the Haml compiler with
