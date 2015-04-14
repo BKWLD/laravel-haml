@@ -67,12 +67,12 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider {
 			default: throw new Exception('Unsupported Laravel version');
 		}
 
-		// Add the .haml.php extension and register the Haml compiler with
-		// Laravel's view engine resolver
-		$app = $this->app;
-		$app['view']->addExtension('haml.php', 'haml', function() use ($app) {
-			return new CompilerEngine($app['Bkwld\LaravelHaml\HamlCompiler']);
-		});
+		// Create compiler engine for reu-use
+		$engine = new CompilerEngine($this->app['Bkwld\LaravelHaml\HamlCompiler']);
+
+		// Add to .haml and .haml.php extensions
+		$this->app['view']->addExtension('haml', 'haml', function() use ($engine) { return $engine; });
+		$this->app['view']->addExtension('haml.php', 'haml', function() use ($engine) { return $engine; });
 	}
 
 	/**

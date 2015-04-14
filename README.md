@@ -34,12 +34,12 @@ For instance, to turn off auto-escaping:
 
 ## Usage
 
-Laravel-Haml registers the ".haml.php" extension with Laravel and forwards compile requests on to MtHaml.  It compiles your Haml templates in the same way as Blade templates; the compiled template is put in app/storage/views.  Thus, you don't suffer compile times on every page load.
+Laravel-Haml registers the ".haml" and ".haml.php" extension with Laravel and forwards compile requests on to MtHaml.  It compiles your Haml templates in the same way as Blade templates; the compiled template is put in app/storage/views.  Thus, you don't suffer compile times on every page load.
 
-In other words, just put your Haml files in the regular views directory and name them like "whatever.haml.php".  You reference them in Laravel like normal: 
+In other words, just put your Haml files in the regular views directory and name them like "whatever.haml".  You reference them in Laravel like normal: 
 
-* **Laravel 4** : `View::make('home.whatever')` for `app/views/home/whatever.haml.php`
-* **Laravel 5** : `view('home.whatever')` for `resources/views/home/whatever.haml.php`
+* **Laravel 4** : `View::make('home.whatever')` for `app/views/home/whatever.haml`
+* **Laravel 5** : `view('home.whatever')` for `resources/views/home/whatever.haml`
 
 The Haml view files can work side-by-side with regular PHP views.
 
