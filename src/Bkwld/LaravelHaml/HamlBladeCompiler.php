@@ -1,12 +1,12 @@
 <?php namespace Bkwld\LaravelHaml;
 
 // Dependencies
-use Illuminate\View\Compilers\Compiler;
+use Illuminate\View\Compilers\BladeCompiler;
 use Illuminate\View\Compilers\CompilerInterface;
 use Illuminate\Filesystem\Filesystem;
 use MtHaml\Environment;
 
-class HamlCompiler extends Compiler implements CompilerInterface {
+class HamlBladeCompiler extends BladeCompiler implements CompilerInterface {
 
 	/**
 	 * The MtHaml instance.
@@ -37,7 +37,14 @@ class HamlCompiler extends Compiler implements CompilerInterface {
 	 */
 	public function compile($path) {
 		if (is_null($this->cachePath)) return;
+
+		// First compile the Haml
 		$contents = $this->mthaml->compileString($this->files->get($path), $path);
+
+		// Then the Blade syntax
+		$contents = $this->compileString($contents);
+
+		// Save
 		$this->files->put($this->getCompiledPath($path), $contents);
 	}
 

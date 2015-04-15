@@ -26,20 +26,25 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider {
 		// Version specific registering
 		if ($this->version() == 5) $this->registerLaravel5();
 
-		// Bind the Haml compiler
-		$this->app->bindShared('Bkwld\LaravelHaml\HamlCompiler', function($app) {
+		// Determine the cache dir
+		$cache_dir = storage_path($this->version() == 5 ? '/framework/views' : '/views');
 
-			// Instantiate MtHaml, the brains of the operation
+		// Bind the package-configred MtHaml instance
+		$this->app->singleton('laravel-haml.mthaml', function($app) {
 			$config = $this->getConfig();
-			$mthaml = new MtHaml\Environment($config['mthaml']['environment'], 
+			return new MtHaml\Environment($config['mthaml']['environment'], 
 				$config['mthaml']['options'], 
 				$config['mthaml']['filters']);
+		});
 
-			// Instantiate our Laravel-style compiler
-			$cache = $this->version() == 5 ? 
-				storage_path('/framework/views') : 
-				$app['path.storage'].'/views';
-			return new HamlCompiler($mthaml, $app['files'], $cache);
+		// Bind the Haml compiler
+		$this->app->singleton('Bkwld\LaravelHaml\HamlCompiler', function($app) use ($cache_dir) {
+			return new HamlCompiler($app['laravel-haml.mthaml'], $app['files'], $cache_dir);
+		});
+
+		// Bind the Haml Blade compiler
+		$this->app->singleton('Bkwld\LaravelHaml\HamlBladeCompiler', function($app) use ($cache_dir) {
+			return new HamlBladeCompiler($app['laravel-haml.mthaml'], $app['files'], $cache_dir);
 		});
 
 	}
@@ -67,12 +72,9 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider {
 			default: throw new Exception('Unsupported Laravel version');
 		}
 
-		// Create compiler engine for reu-use
-		$engine = new CompilerEngine($this->app['Bkwld\LaravelHaml\HamlCompiler']);
-
-		// Add to .haml and .haml.php extensions
-		$this->app['view']->addExtension('haml', 'haml', function() use ($engine) { return $engine; });
-		$this->app['view']->addExtension('haml.php', 'haml', function() use ($engine) { return $engine; });
+		// Register compilers
+		$this->registerHamlCompiler();
+		$this->registerHamlBladeCompiler();
 	}
 
 	/**
@@ -98,6 +100,40 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider {
 	}
 
 	/**
+	 * Register the regular haml compiler
+	 *
+	 * @return void
+	 */
+	public function registerHamlCompiler() {
+
+		// Add resolver
+		$this->app['view.engine.resolver']->register('haml', function() {
+			return new CompilerEngine($this->app['Bkwld\LaravelHaml\HamlCompiler']);
+		});
+
+		// Add extensions
+		$this->app['view']->addExtension('haml', 'haml');
+		$this->app['view']->addExtension('haml.php', 'haml');
+	}
+
+	/**
+	 * Register the blade compiler compiler
+	 *
+	 * @return void
+	 */
+	public function registerHamlBladeCompiler() {
+
+		// Add resolver
+		$this->app['view.engine.resolver']->register('haml.blade', function() {
+			return new CompilerEngine($this->app['Bkwld\LaravelHaml\HamlBladeCompiler']);
+		});
+
+		// Add extensions
+		$this->app['view']->addExtension('haml.blade', 'haml.blade');
+		$this->app['view']->addExtension('haml.blade.php', 'haml.blade');
+	}
+
+	/**
 	 * Get the configuration, which is keyed differently in L5 vs l4
 	 *
 	 * @return array 
@@ -107,13 +143,19 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider {
 		return $this->app->make('config')->get($key);
 	}
 
+	
+
 	/**
 	 * Get the services provided by the provider.
 	 *
 	 * @return array
 	 */
 	public function provides() {
-		return array('Bkwld\LaravelHaml\HamlCompiler');
+		return array(
+			'Bkwld\LaravelHaml\HamlCompiler', 
+			'Bkwld\LaravelHaml\HamlBladeCompiler',
+			'laravel-haml.mthaml',
+		);
 	}
 
 }
