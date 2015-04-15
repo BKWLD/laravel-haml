@@ -124,13 +124,13 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider {
 	public function registerHamlBladeCompiler() {
 
 		// Add resolver
-		$this->app['view.engine.resolver']->register('blade.haml', function() {
+		$this->app['view.engine.resolver']->register('haml.blade', function() {
 			return new CompilerEngine($this->app['Bkwld\LaravelHaml\HamlBladeCompiler']);
 		});
 
 		// Add extensions
-		$this->app['view']->addExtension('blade.haml', 'blade.haml');
-		$this->app['view']->addExtension('blade.haml.php', 'blade.haml');
+		$this->app['view']->addExtension('haml.blade', 'haml.blade');
+		$this->app['view']->addExtension('haml.blade.php', 'haml.blade');
 	}
 
 	/**
