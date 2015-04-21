@@ -36,9 +36,9 @@ class HamlBladeCompiler extends BladeCompiler implements CompilerInterface {
 	 * @return void
 	 */
 	public function compile($path) {
-		if (is_null($this->cachePath)) return;
-
 		$this->footer = array();
+		
+		if (is_null($this->cachePath)) return;
 
 		// First compile the Haml
 		$contents = $this->mthaml->compileString($this->files->get($path), $path);
