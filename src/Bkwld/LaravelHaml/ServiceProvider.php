@@ -75,7 +75,6 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider {
 		// Register compilers
 		$this->registerHamlCompiler();
     $this->registerHamlBladeCompiler();
-    
 
     $customDirectives = $this->app['blade.compiler']->getCustomDirectives();
     foreach ($customDirectives as $name => $closure) {
