@@ -145,7 +145,13 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider {
 	 * @return array 
 	 */
 	public function getConfig() {
-		$key = $this->version() == 5 ? 'laravel-haml' : 'laravel-haml::config';
+        $configFiles = [
+            4 => 'laravel-haml::config',
+            5 => 'laravel-haml',
+            6 => 'haml'
+        ];
+
+		$key = $configFiles[$this->version()];
 		return $this->app->make('config')->get($key);
 	}
 
