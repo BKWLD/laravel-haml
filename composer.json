@@ -1,5 +1,5 @@
 {
-    "name": "bkwld/laravel-haml",
+    "name": "petrenkorf/laravel-haml",
     "description": "Wraps MtHaml for ease use in Laravel",
     "authors": [
         {
